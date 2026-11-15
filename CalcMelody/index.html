@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="CalcMelody: integrales dobles, derivadas parciales, gráficas 2D/3D con Plotly y melodías pentatónicas generadas desde la geometría de la superficie."
+  />
+  <title>CalcMelody · Cálculo multivariable con melodía</title>
+
+  <!-- Plotly.js desde CDN -->
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+
+  <!-- KaTeX: renderizado profesional de fórmulas matemáticas -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"
+  />
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+
+  <!-- Hoja de estilos -->
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+  <!-- ============================ CABECERA ============================ -->
+  <header class="hero">
+    <p class="hero-marca">CALCULADORA MULTIVARIABLE · UDES</p>
+    <h1>Calc<span class="acento">Melody</span></h1>
+    <p class="hero-subtitulo">
+      Integrales dobles ∬, derivadas parciales ∂, gráficas 2D/3D con Plotly y
+      una melodía pentatónica generada desde la geometría de la superficie.
+      Incluye funciones predefinidas y la opción de escribir tu propia función.
+    </p>
+    <p class="hero-autores">
+      Keyner Garcia · Mateo Sanguino · Jorge Aguillon · Kenner Rodriguez —
+      Universidad de Santander (UDES)
+    </p>
+  </header>
+
+  <main class="app">
+    <!-- ========================= 0 · CONFIGURACIÓN ========================= -->
+    <section class="panel panel-controles" aria-labelledby="titulo-config">
+      <div class="panel-cabecera">
+        <h2 id="titulo-config"><span class="paso">0</span> Configuración</h2>
+      </div>
+
+      <div class="controles">
+        <label class="control">
+          <span class="control-etiqueta">Función de ejemplo</span>
+          <select id="select-ejemplo" class="control-input"></select>
+        </label>
+
+        <label class="control">
+          <span class="control-etiqueta">Operación</span>
+          <select id="select-operacion" class="control-input">
+            <option value="integral">Solo integral doble ∬</option>
+            <option value="dx">Derivar respecto a x (∂f/∂x)</option>
+            <option value="dy">Derivar respecto a y (∂f/∂y)</option>
+          </select>
+        </label>
+
+        <label class="control">
+          <span class="control-etiqueta">Vista de la gráfica</span>
+          <select id="select-vista" class="control-input">
+            <option value="3d">3D · superficie</option>
+            <option value="2d">2D · contorno</option>
+          </select>
+        </label>
+
+        <label class="control">
+          <span class="control-etiqueta">Orden de integración</span>
+          <select id="select-orden" class="control-input">
+            <option value="dydx">∫∫ … dy dx (primero y)</option>
+            <option value="dxdy">∫∫ … dx dy (primero x)</option>
+          </select>
+        </label>
+      </div>
+
+      <button id="btn-calcular" class="btn btn-principal" type="button">
+        ▶ Calcular, graficar y generar melodía
+      </button>
+
+      <!-- ============ Campos de la función personalizada ============ -->
+      <div id="panel-personalizada" class="personalizada" hidden>
+        <p class="personalizada-titulo">✎ Escribe tu propia función</p>
+
+        <div class="controles">
+          <label class="control control--ancho">
+            <span class="control-etiqueta">f(x, y) =</span>
+            <input
+              id="input-funcion"
+              class="control-input"
+              type="text"
+              value="x^2 + y^2"
+              placeholder="ej: x^2 + y*sin(y)"
+              autocomplete="off"
+              spellcheck="false"
+            />
+          </label>
+
+          <label class="control">
+            <span class="control-etiqueta">Límites de x (x₀, x₁)</span>
+            <input id="input-xlim" class="control-input" type="text" value="-1, 1"
+                   placeholder="ej: -1, 1 · 0, 1" autocomplete="off" />
+          </label>
+
+          <label class="control">
+            <span class="control-etiqueta">Límites de y (y₀, y₁)</span>
+            <input id="input-ylim" class="control-input" type="text" value="-1, 1"
+                   placeholder="ej: -1, 1 · 0, x" autocomplete="off" />
+          </label>
+        </div>
+
+        <p class="sintaxis">
+          <strong>Sintaxis:</strong> operadores <code>+</code> <code>−</code> <code>*</code> <code>/</code>
+          <code>^</code> (potencia) · funciones <code>sin</code> <code>cos</code> <code>tan</code>
+          <code>sqrt</code> <code>exp</code> <code>ln</code> <code>log</code> <code>abs</code> ·
+          constantes <code>pi</code> y <code>e</code> · también acepta <code>√(x+y)</code>, <code>π</code>,
+          <code>2x</code> y <code>xy</code>. Las derivadas parciales y el procedimiento de la integral se
+          calculan simbólicamente solos.<br />
+          <strong>Límites:</strong> números (<code>0, 1</code>) o expresiones de la otra variable
+          (<code>0, x</code> para ∫₀ˣ, <code>0, pi/2</code>).
+        </p>
+      </div>
+
+      <p id="estado" class="estado" role="status" aria-live="polite">
+        Elige un ejemplo y pulsa el botón para empezar.
+      </p>
+    </section>
+
+    <!-- ========================= 1 · INTEGRAL ========================= -->
+    <section class="panel" aria-labelledby="titulo-integral">
+      <div class="panel-cabecera">
+        <h2 id="titulo-integral"><span class="paso">1</span> Integral doble ∬ f(x,y) dA</h2>
+      </div>
+
+      <div class="resultado-valor" id="integral-valor">—</div>
+      <p class="resultado-exacto" id="integral-exacto">Valor exacto: —</p>
+      <p class="nota-aclaratoria" id="integral-nota" hidden></p>
+      <p class="resultado-interpretacion" id="integral-interpretacion">—</p>
+
+      <div class="recordatorio">
+        <strong>Método general:</strong>
+        <span class="tex" data-display>\iint_R f(x,y)\,dA = \int_{x_0}^{x_1}\left[\int_{y_0}^{y_1} f(x,y)\,dy\right]dx</span>
+        — primero se integra respecto a <em>y</em> dejando <em>x</em> como constante, y con ese resultado
+        (una función g(x)) se integra respecto a <em>x</em>. Siempre se evalúa la antiderivada en el
+        límite superior y se le resta la evaluación en el límite inferior. El selector
+        <em>Orden de integración</em> permite hacerlo también en el orden dx dy.
+      </div>
+
+      <h3>Procedimiento paso a paso</h3>
+      <div id="integral-pasos" class="pasos"></div>
+    </section>
+
+    <!-- ========================= 2 · DERIVADA ========================= -->
+    <section class="panel" id="panel-derivada" aria-labelledby="titulo-derivada" hidden>
+      <div class="panel-cabecera">
+        <h2 id="titulo-derivada"><span class="paso">2</span> Derivada parcial</h2>
+      </div>
+
+      <p class="derivada-expresion" id="derivada-expresion">—</p>
+      <p class="derivada-texto" id="derivada-interpretacion">—</p>
+
+      <h3>Procedimiento paso a paso</h3>
+      <div id="derivada-pasos" class="pasos"></div>
+    </section>
+
+    <!-- ========================= 3 · GRÁFICA ========================= -->
+    <section class="panel" aria-labelledby="titulo-grafica">
+      <div class="panel-cabecera">
+        <h2 id="titulo-grafica"><span class="paso">3</span> Gráfica</h2>
+        <span class="titulo-funcion" id="titulo-funcion-grafica"></span>
+      </div>
+
+      <div id="grafica" class="contenedor-grafica" aria-label="Gráfica de la superficie"></div>
+      <p class="grafica-nota" id="grafica-nota"></p>
+      <p class="leyenda-puntos">
+        Puntos verdes: los 24 puntos de muestreo (dos diagonales del dominio)
+        que generan la melodía. Línea violeta: contorno de la región de integración R.
+      </p>
+    </section>
+
+    <!-- ========================= 4 · TABLA ========================= -->
+    <section class="panel" aria-labelledby="titulo-tabla">
+      <div class="panel-cabecera">
+        <h2 id="titulo-tabla"><span class="paso">4</span> Tabla de valores</h2>
+      </div>
+
+      <div class="tabla-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">x</th>
+              <th scope="col">y</th>
+              <th scope="col">z</th>
+              <th scope="col">Nota</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-valores">
+            <tr><td colspan="5">Sin datos: pulsa “Calcular, graficar y generar melodía”.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ========================= 5 · MELODÍA ========================= -->
+    <section class="panel" aria-labelledby="titulo-melodia">
+      <div class="panel-cabecera">
+        <h2 id="titulo-melodia"><span class="paso">5</span> Melodía pentatónica</h2>
+      </div>
+
+      <div id="secuencia-notas" class="secuencia-notas" aria-label="Secuencia de notas"></div>
+      <p class="melodia-info" id="melodia-info">Sin notas generadas todavía.</p>
+
+      <div class="botones-melodia">
+        <button id="btn-reproducir" class="btn btn-audio" type="button" disabled>
+          🔊 Reproducir melodía
+        </button>
+        <button id="btn-detener" class="btn btn-secundario" type="button" disabled>
+          ⏹ Detener
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============================ PIE ============================ -->
+  <footer class="pie">
+    <p class="pie-autores">
+      <strong>CalcMelody</strong> — desarrollado por
+      <span>Keyner Garcia</span> · <span>Mateo Sanguino</span> ·
+      <span>Jorge Aguillon</span> · <span>Kenner Rodriguez</span>
+    </p>
+    <p class="pie-institucion">
+      <strong>UDES</strong> · Universidad de Santander · Proyecto de Cálculo Multivariable
+    </p>
+    <p class="pie-tecnologia">Simpson 2D + Plotly.js + Web Audio API · Vanilla JavaScript</p>
+  </footer>
+
+  <!-- ====================== SCRIPTS (orden importante) ======================
+       ejemplos → expresiones (AST/derivadas) → simbolico (integrales y LaTeX
+       del AST) → calculo (Simpson) → latex (KaTeX) → procedimientos (pasos)
+       → grafica → melodia → ui → main
+  ====================================================================== -->
+  <script src="js/ejemplos.js"></script>
+  <script src="js/expresiones.js"></script>
+  <script src="js/simbolico.js"></script>
+  <script src="js/calculo.js"></script>
+  <script src="js/latex.js"></script>
+  <script src="js/procedimientos.js"></script>
+  <script src="js/grafica.js"></script>
+  <script src="js/melodia.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

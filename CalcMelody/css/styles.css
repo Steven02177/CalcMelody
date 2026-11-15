@@ -1,0 +1,741 @@
+/* ============================================================
+ *  CalcMelody · styles.css
+ *  Diseño oscuro moderno, responsive básico.
+ *  Variables CSS para mantener la consistencia visual.
+ * ============================================================ */
+
+:root {
+  --bg: #0d1020;
+  --panel: #151a2e;
+  --panel-2: #1a2038;
+  --borde: #262e4d;
+  --texto: #e8ecfa;
+  --texto-suave: #9aa4c7;
+  --acento: #7c5cff;
+  --acento-2: #22d3ee;
+  --verde: #22c55e;
+  --error: #f87171;
+  --radio: 16px;
+  --sombra: 0 12px 32px rgba(0, 0, 0, 0.35);
+  --fuente: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  --mono: ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+body {
+  min-height: 100vh;
+  font-family: var(--fuente);
+  color: var(--texto);
+  line-height: 1.55;
+  background:
+    radial-gradient(1100px 520px at 8% -12%, rgba(124, 92, 255, 0.28), transparent 60%),
+    radial-gradient(900px 480px at 102% -4%, rgba(34, 211, 238, 0.18), transparent 55%),
+    var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --------------------------- HERO --------------------------- */
+.hero {
+  padding: 2.6rem 1.25rem 1.4rem;
+  text-align: center;
+}
+
+.hero-marca {
+  margin: 0 0 0.4rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.32em;
+  color: var(--acento-2);
+  font-weight: 600;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(2.4rem, 6vw, 3.6rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.hero h1 .acento {
+  background: linear-gradient(92deg, var(--acento) 5%, var(--acento-2) 95%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero-subtitulo {
+  max-width: 680px;
+  margin: 0.7rem auto 0;
+  color: var(--texto-suave);
+  font-size: clamp(0.92rem, 2.4vw, 1.02rem);
+}
+
+.hero-autores {
+  max-width: 680px;
+  margin: 0.75rem auto 0;
+  font-size: 0.82rem;
+  color: var(--acento-2);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* --------------------------- APP ---------------------------- */
+.app {
+  display: grid;
+  gap: 1.25rem;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 1rem 1.15rem 3.5rem;
+}
+
+.panel {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0)), var(--panel);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  padding: 1.35rem 1.4rem;
+  box-shadow: var(--sombra);
+}
+
+.panel-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.panel h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+  font-size: 1.06rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.panel h3 {
+  margin: 1.3rem 0 0.6rem;
+  font-size: 0.92rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--acento-2);
+}
+
+/* Número circular del encabezado de cada sección */
+.paso {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, var(--acento), var(--acento-2));
+}
+
+/* ------------------------ CONTROLES ------------------------- */
+.controles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1rem;
+}
+
+.control {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.control-etiqueta {
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--texto-suave);
+}
+
+.control-input {
+  width: 100%;
+  padding: 0.65rem 0.8rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--texto);
+  background: var(--panel-2);
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+  outline: none;
+  transition: border-color 0.18s, box-shadow 0.18s;
+  cursor: pointer;
+}
+
+.control-input:focus {
+  border-color: var(--acento);
+  box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.25);
+}
+
+.control--ancho {
+  grid-column: 1 / -1; /* ocupa todo el ancho de la fila */
+}
+
+/* ------------- FUNCIÓN PERSONALIZADA (campos extra) ------------- */
+.personalizada {
+  margin-top: 1.1rem;
+  padding: 1rem 1.05rem;
+  background: rgba(124, 92, 255, 0.09);
+  border: 1px dashed rgba(124, 92, 255, 0.55);
+  border-radius: 12px;
+}
+
+.personalizada-titulo {
+  margin: 0 0 0.75rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #c4b5fd;
+  text-transform: uppercase;
+}
+
+#input-funcion {
+  font-family: var(--mono);
+  font-size: 1.02rem;
+  letter-spacing: 0.01em;
+}
+
+.sintaxis {
+  margin: 0.85rem 0 0;
+  font-size: 0.8rem;
+  line-height: 1.75;
+  color: var(--texto-suave);
+}
+
+.sintaxis code {
+  display: inline-block;
+  padding: 0.05rem 0.4rem;
+  margin: 0 0.1rem;
+  font-family: var(--mono);
+  font-size: 0.79rem;
+  color: #67e8f9;
+  background: rgba(34, 211, 238, 0.12);
+  border: 1px solid rgba(34, 211, 238, 0.28);
+  border-radius: 6px;
+}
+
+/* -------------------------- BOTONES ------------------------- */
+.btn {
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 650;
+  padding: 0.75rem 1.3rem;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s, background 0.15s;
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn:not(:disabled):hover {
+  transform: translateY(-2px);
+}
+
+.btn:not(:disabled):active {
+  transform: translateY(0);
+}
+
+.btn-principal {
+  margin-top: 1.15rem;
+  width: 100%;
+  color: #fff;
+  background: linear-gradient(92deg, var(--acento), var(--acento-2));
+  box-shadow: 0 10px 26px rgba(124, 92, 255, 0.32);
+}
+
+.btn-principal:focus-visible {
+  outline: 3px solid rgba(34, 211, 238, 0.6);
+  outline-offset: 2px;
+}
+
+.btn-secundario {
+  color: var(--texto);
+  background: var(--panel-2);
+  border-color: var(--borde);
+}
+
+.btn-secundario:not(:disabled):hover {
+  background: #212a4a;
+}
+
+.btn-audio {
+  color: #062a12;
+  background: linear-gradient(92deg, #34d399, var(--verde));
+  box-shadow: 0 8px 20px rgba(34, 197, 94, 0.25);
+}
+
+.botones-melodia {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  margin-top: 0.9rem;
+}
+
+/* ------------------------- ESTADO --------------------------- */
+.estado {
+  margin: 0.9rem 0 0;
+  min-height: 1.3rem;
+  font-size: 0.9rem;
+  color: var(--texto-suave);
+}
+
+.estado--ok {
+  color: #4ade80;
+}
+
+.estado--error {
+  color: var(--error);
+}
+
+/* ------------------------- RESULTADOS ----------------------- */
+.resultado-valor {
+  font-family: var(--mono);
+  font-size: clamp(1.15rem, 3.4vw, 1.6rem);
+  font-weight: 700;
+  color: var(--acento-2);
+  word-break: break-word;
+}
+
+.resultado-exacto {
+  margin: 0.35rem 0 0;
+  font-size: 0.86rem;
+  color: var(--texto-suave);
+  font-family: var(--mono);
+}
+
+.resultado-interpretacion {
+  margin: 0.9rem 0 0;
+  padding: 0.85rem 1rem;
+  font-size: 0.94rem;
+  background: var(--panel-2);
+  border-left: 3px solid var(--acento);
+  border-radius: 0 10px 10px 0;
+  color: #cdd4ee;
+}
+
+/* Nota aclaratoria: el selector Operación no cambia la función integrada */
+.nota-aclaratoria {
+  margin: 0.5rem 0 0;
+  padding: 0.55rem 0.85rem;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  background: rgba(124, 92, 255, 0.08);
+  border: 1px dashed rgba(124, 92, 255, 0.45);
+  border-radius: 8px;
+  color: var(--texto-suave);
+}
+
+.nota-aclaratoria strong {
+  color: #cdd4ee;
+}
+
+/* Recordatorio del método general de integración */
+.recordatorio {
+  margin-top: 0.9rem;
+  padding: 0.8rem 1rem;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: #b9c1e0;
+  background: rgba(34, 211, 238, 0.07);
+  border: 1px solid rgba(34, 211, 238, 0.25);
+  border-radius: 10px;
+}
+
+.recordatorio strong {
+  color: var(--acento-2);
+}
+
+.recordatorio em {
+  color: #fff;
+  font-style: normal;
+  font-weight: 700;
+}
+
+/* Pasos de la integral */
+.pasos-lista {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: paso;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.pasos-lista li {
+  position: relative;
+  counter-increment: paso;
+  padding: 0.75rem 0.9rem 0.75rem 3rem;
+  font-size: 0.93rem;
+  background: var(--panel-2);
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+  overflow-x: auto;
+}
+
+.pasos-lista li::before {
+  content: counter(paso);
+  position: absolute;
+  left: 0.7rem;
+  top: 0.75rem;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, var(--acento), var(--acento-2));
+}
+
+.pasos-lista strong {
+  color: #fff;
+}
+
+.nota-tecnica {
+  display: inline-block;
+  margin-top: 0.3rem;
+  font-size: 0.8rem;
+  color: var(--texto-suave);
+  font-style: italic;
+}
+
+/* Derivada parcial */
+.derivada-expresion {
+  display: inline-block;
+  margin: 0;
+  padding: 0.55rem 1rem;
+  font-family: var(--mono);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #67e8f9;
+  background: rgba(34, 211, 238, 0.1);
+  border: 1px solid rgba(34, 211, 238, 0.35);
+  border-radius: 10px;
+}
+
+.derivada-texto {
+  margin: 0.9rem 0 0;
+  font-size: 0.94rem;
+  color: #cdd4ee;
+}
+
+/* ------------------------- GRÁFICA -------------------------- */
+.titulo-funcion {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--texto-suave);
+}
+
+.contenedor-grafica {
+  width: 100%;
+  height: 540px;
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(10, 13, 26, 0.55);
+}
+
+.leyenda-puntos {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.7rem;
+  font-size: 0.83rem;
+  color: var(--texto-suave);
+}
+
+.leyenda-puntos::before {
+  content: '';
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--verde);
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.3);
+}
+
+/* Plotly: fondo y modebar acordes al tema */
+.js-plotly-plot .plotly .modebar {
+  background: rgba(21, 26, 46, 0.8) !important;
+}
+
+/* -------------------------- TABLA --------------------------- */
+.tabla-scroll {
+  max-height: 380px;
+  overflow: auto;
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+}
+
+thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 0.7rem 0.9rem;
+  text-align: left;
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--texto-suave);
+  background: var(--panel-2);
+  border-bottom: 1px solid var(--borde);
+}
+
+tbody td {
+  padding: 0.55rem 0.9rem;
+  border-bottom: 1px solid rgba(38, 46, 77, 0.6);
+  font-family: var(--mono);
+  font-size: 0.86rem;
+}
+
+tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.025);
+}
+
+tbody tr:hover {
+  background: rgba(124, 92, 255, 0.1);
+}
+
+.col-num {
+  color: var(--texto-suave);
+}
+
+/* -------------------------- NOTAS --------------------------- */
+.nota-chip {
+  display: inline-block;
+  padding: 0.14rem 0.55rem;
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #062a12;
+  background: linear-gradient(135deg, #6ee7b7, var(--verde));
+}
+
+.nota-chip--grande {
+  padding: 0.34rem 0.72rem;
+  font-size: 0.88rem;
+}
+
+.secuencia-notas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  min-height: 42px;
+  padding: 0.85rem;
+  background: var(--panel-2);
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+}
+
+.melodia-info {
+  margin: 0.7rem 0 0;
+  font-size: 0.85rem;
+  color: var(--texto-suave);
+}
+
+/* -------------------------- FOOTER -------------------------- */
+.pie {
+  padding: 1.5rem 1rem 2.5rem;
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--texto-suave);
+}
+
+.pie p {
+  margin: 0.3rem 0;
+}
+
+.pie-autores {
+  font-size: 0.9rem;
+  color: var(--texto);
+}
+
+.pie-autores strong {
+  color: var(--acento-2);
+}
+
+.pie-autores span {
+  font-weight: 650;
+}
+
+.pie-institucion {
+  letter-spacing: 0.03em;
+  color: #c4b5fd;
+}
+
+.pie-tecnologia {
+  font-size: 0.76rem;
+  opacity: 0.8;
+}
+
+/* =================== FÓRMULAS (KaTeX) ==================== */
+/* Cada fórmula se envuelve en <span class="tex"> y KaTeX la
+   sustituye por MathML/HTML renderizado. */
+.tex {
+  color: inherit;
+}
+
+.tex-fallback {
+  font-family: var(--mono);
+  font-size: 0.9em;
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.08);
+  border-radius: 6px;
+  padding: 0 0.3em;
+}
+
+.formula {
+  display: block;
+  margin: 0.45rem 0;
+  padding: 0.45rem 0.6rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  background: rgba(34, 211, 238, 0.05);
+  border-left: 3px solid rgba(34, 211, 238, 0.45);
+  border-radius: 0 8px 8px 0;
+  color: var(--texto);
+  font-size: 1.02rem;
+}
+
+.katex {
+  color: var(--texto);
+  font-size: 1.05em;
+}
+
+.katex-display {
+  margin: 0.35em 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.1em 0;
+}
+
+/* Contenedor de pasos: cada paso de la lista puede llevar fórmulas */
+.pasos-lista li .formula:first-child {
+  margin-top: 0.35rem;
+}
+
+.pasos-lista li .nota-tecnica {
+  margin-top: 0.5rem;
+  line-height: 1.7;
+}
+
+.subpaso {
+  margin: 0.3rem 0;
+  padding-left: 0.2rem;
+}
+
+/* Resultado destacado de la integral con fórmula KaTeX */
+#integral-valor .katex {
+  font-size: 1.3em;
+}
+
+#integral-exacto .katex {
+  font-size: 1.02em;
+}
+
+#integral-exacto .comparacion {
+  color: var(--texto-suave);
+  font-family: var(--mono);
+  font-size: 0.84em;
+}
+
+/* Fórmula destacada de la derivada parcial */
+.derivada-expresion .katex {
+  font-size: 1.35em;
+}
+
+/* Nota bajo la gráfica */
+.grafica-nota {
+  margin: 0.75rem 0 0;
+  font-size: 0.87rem;
+  line-height: 1.8;
+  color: var(--texto-suave);
+}
+
+.grafica-nota .katex {
+  font-size: 1em;
+}
+
+/* Notas comentadas del ejemplo (desplegable) */
+.notas-ejemplo {
+  margin-top: 1rem;
+  padding: 0.7rem 0.9rem;
+  background: rgba(124, 92, 255, 0.07);
+  border: 1px solid rgba(124, 92, 255, 0.3);
+  border-radius: 10px;
+}
+
+.notas-ejemplo summary {
+  cursor: pointer;
+  font-size: 0.86rem;
+  font-weight: 650;
+  color: #c4b5fd;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.notas-ejemplo[open] summary {
+  margin-bottom: 0.7rem;
+}
+
+.recordatorio .katex-display {
+  display: block;
+  margin: 0.5rem 0;
+}
+
+/* ------------------------ RESPONSIVE ------------------------ */
+@media (max-width: 720px) {
+  .panel {
+    padding: 1.1rem 1rem;
+  }
+
+  .contenedor-grafica {
+    height: 400px;
+  }
+
+  .botones-melodia .btn {
+    flex: 1 1 140px;
+  }
+}
+
+@media (max-width: 420px) {
+  .hero {
+    padding-top: 1.8rem;
+  }
+
+  .contenedor-grafica {
+    height: 340px;
+  }
+}
